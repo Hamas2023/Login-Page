@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Account Access Portal</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #1a1c2e 0%, #16213e 50%, #0f3460 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .container {
+        background: rgba(15, 23, 42, 0.95);
+        padding: 2.5rem;
+        border-radius: 24px;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+        width: 100%;
+        max-width: 420px;
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(148, 163, 184, 0.2);
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 2.5rem;
+      }
+
+      .header h1 {
+        color: #f1f5f9;
+        font-size: 2.2rem;
+        margin-bottom: 0.8rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+
+      .header p {
+        color: #94a3b8;
+        font-size: 1rem;
+        font-weight: 400;
+      }
+
+      .form-group {
+        margin-bottom: 1.8rem;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 0.7rem;
+        color: #e2e8f0;
+        font-weight: 600;
+        font-size: 0.95rem;
+      }
+
+      .form-group input {
+        width: 100%;
+        padding: 0.9rem;
+        border: 2px solid #374151;
+        border-radius: 12px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: rgba(30, 41, 59, 0.8);
+        font-family: inherit;
+        color: #f1f5f9;
+      }
+
+      .form-group input:focus {
+        outline: none;
+        border-color: #10b981;
+        box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15);
+        transform: translateY(-1px);
+      }
+
+      .btn {
+        width: 100%;
+        padding: 0.9rem;
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-bottom: 1.5rem;
+        font-family: inherit;
+      }
+
+      .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+      }
+
+      .btn:active {
+        transform: translateY(-1px);
+      }
+
+      .btn-secondary {
+        background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      }
+
+      .btn-secondary:hover {
+        box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
+      }
+
+      .switch-form {
+        text-align: center;
+        color: #94a3b8;
+        font-size: 0.95rem;
+      }
+
+      .switch-form a {
+        color: #10b981;
+        text-decoration: none;
+        font-weight: 600;
+        cursor: pointer;
+        transition: color 0.2s ease;
+      }
+
+      .switch-form a:hover {
+        color: #059669;
+        text-decoration: underline;
+      }
+
+      .home-page {
+        display: none;
+        text-align: center;
+        color: white;
+        padding: 3rem;
+      }
+
+      .home-page h1 {
+        font-size: 3.5rem;
+        margin-bottom: 1.5rem;
+        text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+        font-weight: 700;
+      }
+
+      .home-page p {
+        font-size: 1.3rem;
+        margin-bottom: 2.5rem;
+        opacity: 0.9;
+        line-height: 1.6;
+      }
+
+      .logout-btn {
+        padding: 0.9rem 2.5rem;
+        background: rgba(255, 255, 255, 0.15);
+        color: white;
+        border: 2px solid rgba(255, 255, 255, 0.6);
+        border-radius: 12px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: 600;
+        backdrop-filter: blur(10px);
+      }
+
+      .logout-btn:hover {
+        background: rgba(255, 255, 255, 0.9);
+        color: #0f3460;
+        transform: translateY(-2px);
+      }
+
+      .alert {
+        padding: 0.9rem;
+        border-radius: 12px;
+        margin-bottom: 1.5rem;
+        text-align: center;
+        font-weight: 500;
+        display: none;
+        font-size: 0.95rem;
+      }
+
+      .alert-error {
+        background: linear-gradient(135deg, #fecaca, #fca5a5);
+        color: #dc2626;
+        border: 1px solid #f87171;
+      }
+
+      .alert-success {
+        background: linear-gradient(135deg, #a7f3d0, #6ee7b7);
+        color: #065f46;
+        border: 1px solid #34d399;
+      }
+
+      .password-requirements {
+        background: linear-gradient(135deg, #1e293b, #334155);
+        padding: 1.2rem;
+        border-radius: 12px;
+        margin-top: 1.5rem;
+        border-left: 4px solid #10b981;
+        font-size: 0.85rem;
+        color: #cbd5e1;
+        line-height: 1.6;
+      }
+
+      .hide {
+        display: none;
+      }
+
+      /* Enhanced animations */
+      .container {
+        animation: slideIn 0.5s ease-out;
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Login Form -->
+    <div class="container" id="loginContainer">
+      <div class="header">
+        <h1>Access Portal</h1>
+        <p>Sign in to continue to your dashboard</p>
+      </div>
+
+      <div class="alert alert-error" id="loginAlert"></div>
+
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="loginUsername">Username</label>
+          <input type="text" id="loginUsername" name="username" required />
+        </div>
+
+        <div class="form-group">
+          <label for="loginPassword">Password</label>
+          <input type="password" id="loginPassword" name="password" required />
+        </div>
+
+        <button type="submit" class="btn">Sign In</button>
+      </form>
+
+      <div class="switch-form">
+        New to our platform? <a onclick="showRegister()">Get Started</a>
+      </div>
+    </div>
+
+    <!-- Registration Form -->
+    <div class="container hide" id="registerContainer">
+      <div class="header">
+        <h1>Join Our Platform</h1>
+        <p>Create your account in seconds</p>
+      </div>
+
+      <div class="alert" id="registerAlert"></div>
+
+      <form id="registerForm">
+        <div class="form-group">
+          <label for="regUsername">Choose Username</label>
+          <input type="text" id="regUsername" name="username" required />
+        </div>
+
+        <div class="form-group">
+          <label for="regEmail">Email Address</label>
+          <input type="email" id="regEmail" name="email" required />
+        </div>
+
+        <div class="form-group">
+          <label for="regPassword">Create Password</label>
+          <input type="password" id="regPassword" name="password" required />
+        </div>
+
+        <div class="form-group">
+          <label for="confirmPassword">Confirm Password</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            name="confirmPassword"
+            required
+          />
+        </div>
+
+        <button type="submit" class="btn btn-secondary">Create Account</button>
+      </form>
+
+      <div class="password-requirements">
+        <strong>Password Security Requirements:</strong><br />
+        • Minimum of 6 characters in length<br />
+        • Must include both letters and numbers
+      </div>
+
+      <div class="switch-form" style="margin-top: 1.5rem">
+        Already have an account? <a onclick="showLogin()">Sign In Instead</a>
+      </div>
+    </div>
+
+    <!-- Home Page -->
+    <div class="home-page hide" id="homePage">
+      <h1>🚀 Dashboard</h1>
+      <p id="welcomeMessage">
+        You're now connected to your personal workspace.
+      </p>
+      <button class="logout-btn" onclick="logout()">Sign Out</button>
+    </div>
+
+    <script>
+      // Store user accounts (in memory - will reset on page refresh)
+      let userAccounts = {
+        admin: {
+          password: "password123",
+          email: "admin@example.com",
+        },
+      };
+
+      let currentUser = null;
+
+      // Get form elements
+      const loginContainer = document.getElementById("loginContainer");
+      const registerContainer = document.getElementById("registerContainer");
+      const homePage = document.getElementById("homePage");
+      const loginForm = document.getElementById("loginForm");
+      const registerForm = document.getElementById("registerForm");
+
+      // Alert elements
+      const loginAlert = document.getElementById("loginAlert");
+      const registerAlert = document.getElementById("registerAlert");
+
+      // Input elements
+      const loginUsername = document.getElementById("loginUsername");
+      const loginPassword = document.getElementById("loginPassword");
+      const regUsername = document.getElementById("regUsername");
+      const regEmail = document.getElementById("regEmail");
+      const regPassword = document.getElementById("regPassword");
+      const confirmPassword = document.getElementById("confirmPassword");
+
+      // Show/Hide functions
+      function showLogin() {
+        loginContainer.style.display = "block";
+        registerContainer.style.display = "none";
+        homePage.style.display = "none";
+        clearForms();
+        hideAlerts();
+      }
+
+      function showRegister() {
+        loginContainer.style.display = "none";
+        registerContainer.style.display = "block";
+        homePage.style.display = "none";
+        clearForms();
+        hideAlerts();
+      }
+
+      function showHome() {
+        loginContainer.style.display = "none";
+        registerContainer.style.display = "none";
+        homePage.style.display = "block";
+        document.getElementById(
+          "welcomeMessage"
+        ).textContent = `Welcome back, ${currentUser}! Your dashboard is ready to use.`;
+      }
+
+      // Alert functions
+      function showAlert(element, message, type = "error") {
+        element.textContent = message;
+        element.className = `alert alert-${type}`;
+        element.style.display = "block";
+
+        setTimeout(() => {
+          element.style.display = "none";
+        }, 5000);
+      }
+
+      function hideAlerts() {
+        loginAlert.style.display = "none";
+        registerAlert.style.display = "none";
+      }
+
+      function clearForms() {
+        loginForm.reset();
+        registerForm.reset();
+      }
+
+      // Validation functions
+      function validatePassword(password) {
+        return (
+          password.length >= 6 &&
+          /[a-zA-Z]/.test(password) &&
+          /[0-9]/.test(password)
+        );
+      }
+
+      function validateEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      }
+
+      // Login form submission
+      loginForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const username = loginUsername.value.trim();
+        const password = loginPassword.value.trim();
+
+        if (username === "" || password === "") {
+          showAlert(loginAlert, "Please enter correct username and password");
+          return;
+        }
+
+        // Check if user exists and password matches
+        if (
+          userAccounts[username] &&
+          userAccounts[username].password === password
+        ) {
+          currentUser = username;
+          showHome();
+        } else {
+          showAlert(loginAlert, "Please enter correct username and password");
+          loginForm.reset();
+        }
+      });
+
+      // Registration form submission
+      registerForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const username = regUsername.value.trim();
+        const email = regEmail.value.trim();
+        const password = regPassword.value.trim();
+        const confirmPass = confirmPassword.value.trim();
+
+        // Validation
+        if (
+          username === "" ||
+          email === "" ||
+          password === "" ||
+          confirmPass === ""
+        ) {
+          showAlert(registerAlert, "Please fill in all fields");
+          return;
+        }
+
+        if (username.length < 3) {
+          showAlert(
+            registerAlert,
+            "Username must be at least 3 characters long"
+          );
+          return;
+        }
+
+        if (!validateEmail(email)) {
+          showAlert(registerAlert, "Please enter a valid email address");
+          return;
+        }
+
+        if (!validatePassword(password)) {
+          showAlert(
+            registerAlert,
+            "Password must be at least 6 characters and contain letters and numbers"
+          );
+          return;
+        }
+
+        if (password !== confirmPass) {
+          showAlert(registerAlert, "Passwords do not match");
+          return;
+        }
+
+        if (userAccounts[username]) {
+          showAlert(
+            registerAlert,
+            "Username already exists. Please choose a different username"
+          );
+          return;
+        }
+
+        // Check if email already exists
+        for (let user in userAccounts) {
+          if (userAccounts[user].email === email) {
+            showAlert(
+              registerAlert,
+              "Email already registered. Please use a different email"
+            );
+            return;
+          }
+        }
+
+        // Create new account
+        userAccounts[username] = {
+          password: password,
+          email: email,
+        };
+
+        showAlert(
+          registerAlert,
+          "Account created successfully! You can now sign in.",
+          "success"
+        );
+
+        setTimeout(() => {
+          showLogin();
+          loginUsername.value = username; // Pre-fill username for convenience
+        }, 2000);
+      });
+
+      // Logout function
+      function logout() {
+        currentUser = null;
+        showLogin();
+      }
+
+      // Clear alerts when user starts typing
+      [loginUsername, loginPassword].forEach((input) => {
+        input.addEventListener("input", () => {
+          loginAlert.style.display = "none";
+        });
+      });
+
+      [regUsername, regEmail, regPassword, confirmPassword].forEach((input) => {
+        input.addEventListener("input", () => {
+          registerAlert.style.display = "none";
+        });
+      });
+    </script>
+  </body>
+</html>
